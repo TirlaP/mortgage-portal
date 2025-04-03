@@ -5,45 +5,38 @@ import path from 'path'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: '/mortgage-portal/', // Base path for GitHub Pages
+  base: '/mortgage-portal/',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
   },
   optimizeDeps: {
-    include: [
-      'react',
-      'react-dom',
-      'react-router-dom',
-      'lucide-react',
-      '@radix-ui/react-slot',
-      '@radix-ui/react-navigation-menu',
-      '@radix-ui/react-avatar',
-      '@radix-ui/react-dropdown-menu',
-      '@radix-ui/react-dialog',
-      '@radix-ui/react-tabs',
-      '@radix-ui/react-toast',
-      '@radix-ui/react-accordion',
-      'class-variance-authority',
-      'clsx',
-      'tailwind-merge',
-    ],
     force: true
-  },
-  server: {
-    port: 5173,
-    strictPort: true,
   },
   build: {
     outDir: 'dist',
-    sourcemap: true,
+    assetsDir: 'assets',
+    emptyOutDir: true,
+    sourcemap: false,
+    minify: true,
     rollupOptions: {
       output: {
-        manualChunks(id) {
-          if (id.includes('node_modules')) {
-            return 'vendor';
-          }
+        chunkFileNames: 'assets/js/[name]-[hash].js',
+        entryFileNames: 'assets/js/[name]-[hash].js',
+        assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
+        manualChunks: {
+          vendor: ['react', 'react-dom', 'react-router-dom'],
+          ui: [
+            '@radix-ui/react-slot',
+            '@radix-ui/react-navigation-menu',
+            '@radix-ui/react-avatar',
+            '@radix-ui/react-dropdown-menu',
+            '@radix-ui/react-dialog',
+            '@radix-ui/react-tabs',
+            '@radix-ui/react-toast',
+            '@radix-ui/react-accordion'
+          ]
         }
       }
     }
